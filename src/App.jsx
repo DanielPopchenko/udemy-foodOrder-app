@@ -1,11 +1,14 @@
-function App() {
+import Header from './components/header/Header';
+import Meals from './components/meals/Meals';
+import { CartContextProvider } from './store/Cart';
+
+const App = () => {
   return (
-    <>
-      <h1>You got this 💪</h1>
-      <p>Stuck? Not sure how to proceed?</p>
-      <p>Don't worry - we've all been there. Let's build it together!</p>
-    </>
+    <CartContextProvider>
+      <Header />
+      <Meals />
+    </CartContextProvider>
   );
-}
+};
 
 export default App;
