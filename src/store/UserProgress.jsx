@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createContext } from 'react';
 
+// ? object in {} inside createContext is a default value,
+// ? like what we expect there to be
 const UserProgressContext = createContext({
   progress: '', // cart, checkout
   showCart: () => {},
@@ -9,8 +11,38 @@ const UserProgressContext = createContext({
   hideCheckout: () => {},
 });
 
-export const UserContextProvider = ({ children }) => {
-  return <UserProgressContext.Provider>{children}</UserProgressContext.Provider>;
+export const UserProgressContextProvider = ({ children }) => {
+  const [userProgress, setUserProgress] = useState('');
+
+  const showCart = () => {
+    setUserProgress('cart');
+  };
+
+  const hideCart = () => {
+    setUserProgress('');
+  };
+
+  const showCheckout = () => {
+    setUserProgress('checkout');
+  };
+
+  const hideCheckout = () => {
+    setUserProgress('');
+  };
+
+  const userProgressCtx = {
+    progress: userProgress,
+    showCart,
+    hideCart,
+    showCheckout,
+    hideCheckout,
+  };
+
+  return (
+    <UserProgressContext.Provider value={userProgressCtx}>
+      {children}
+    </UserProgressContext.Provider>
+  );
 };
 
 export default UserProgressContext;

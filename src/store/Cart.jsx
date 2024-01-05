@@ -12,13 +12,16 @@ const cartReducer = (state, action) => {
   if (action.type === 'ADD_ITEM') {
     //   ! never mutate the state like this !!!
     // state.items.push(action.item);
-    const existingCartItemIdx = state.items.find((item) => item.id === action.item.id);
+    // ! findIndex() is a method that searches for index not element find() !!!
+    const existingCartItemIdx = state.items.findIndex(
+      (item) => item.id === action.item.id,
+    );
+
     //   creating a copy not to mutate state
     const updatedItems = [...state.items];
     //   ! If we found an element (item exists)
     if (existingCartItemIdx > -1) {
       const existingItem = state.items[existingCartItemIdx];
-      console.log(existingItem);
       const updatedItem = {
         //   if the item exists we spread it and just update the quantity
         ...existingItem,
