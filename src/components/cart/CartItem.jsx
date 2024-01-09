@@ -1,10 +1,17 @@
 import React from 'react';
+import { currencyFormatter } from '../../util/formatting';
 
-const CartItem = ({ item }) => {
+const CartItem = ({ name, quantity, price, onIncrease, onDecrease }) => {
   return (
-    <li key={item.id} className="cart-item">
+    <li className="cart-item">
       <p>
-        {item.name} - {item.quantity}
+        {name} - {quantity} X {currencyFormatter.format(price)}
+      </p>
+
+      <p className="cart-item-actions">
+        <button onClick={onDecrease}>-</button>
+        <span>{quantity}</span>
+        <button onClick={onIncrease}>+</button>
       </p>
     </li>
   );

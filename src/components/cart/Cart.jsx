@@ -7,7 +7,7 @@ import Button from '../UI/Button';
 import CartItem from './CartItem';
 
 const Cart = () => {
-  const { items } = useContext(CartContext);
+  const { items, addItem, removeItem } = useContext(CartContext);
   const { progress, hideCart } = useContext(UserProgressContext);
 
   const cartTotal = items.reduce(
@@ -23,7 +23,14 @@ const Cart = () => {
     <Modal className="cart" open={progress === 'cart'}>
       <ul>
         {items.map((item) => (
-          <CartItem key={item.id} item={item} />
+          <CartItem
+            key={item.id}
+            name={item.name}
+            quantity={item.quantity}
+            price={item.price}
+            onIncrease={() => addItem(item)}
+            onDecrease={() => removeItem(item.id)}
+          />
         ))}
       </ul>
       <p className="cart-total">{currencyFormatter.format(cartTotal)}</p>

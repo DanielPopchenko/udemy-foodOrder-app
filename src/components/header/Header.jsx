@@ -16,8 +16,6 @@ const Header = () => {
     showCart();
   };
 
-  console.log(items);
-
   return (
     <header id="main-header">
       <div id="title">

@@ -8,6 +8,8 @@ const CartContext = createContext({
 // ? Reducer function
 // ? Here we write actions that we expect to be executed with help of dispatches.
 const cartReducer = (state, action) => {
+  console.log('action.item.id: ', action.item.id);
+
   // ?  adding an element
   if (action.type === 'ADD_ITEM') {
     //   ! never mutate the state like this !!!
@@ -38,9 +40,20 @@ const cartReducer = (state, action) => {
   }
   // ?   removing item
   if (action.type === 'REMOVE_ITEM') {
-    const existingCartItemIdx = state.items.find((item) => item.id === action.id);
+    const existingCartItemIdx = state.items.findIndex(
+      // !
+
+      // ! action.item.id id undefined !!!
+
+      // !
+
+      (item) => item.id === action.item.id,
+    );
+    console.log('existingCartItemIdx: ', existingCartItemIdx);
     //   find an existing element
     const existingCartItem = state.items[existingCartItemIdx];
+
+    console.log('existingCartItem: ', existingCartItem);
 
     const updatedItems = [state.items];
     if (existingCartItem.quantity === 1) {
