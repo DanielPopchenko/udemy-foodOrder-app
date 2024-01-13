@@ -24,7 +24,7 @@ const Header = () => {
       </div>
       <nav>
         <Button textOnly onClick={handleShowCart}>
-          Cart ({totalCartItems})
+          Cart({totalCartItems})
         </Button>
       </nav>
     </header>

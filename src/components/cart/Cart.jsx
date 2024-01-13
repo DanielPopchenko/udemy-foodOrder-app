@@ -8,7 +8,9 @@ import CartItem from './CartItem';
 
 const Cart = () => {
   const { items, addItem, removeItem } = useContext(CartContext);
-  const { progress, hideCart } = useContext(UserProgressContext);
+  const { progress, hideCart, showCheckout } = useContext(UserProgressContext);
+
+  console.log('items inside cart comp: ', items);
 
   const cartTotal = items.reduce(
     (totalPrice, item) => totalPrice + item.quantity * item.price,
@@ -19,26 +21,38 @@ const Cart = () => {
     hideCart();
   };
 
+  const handleOpenCheckout = () => {
+    showCheckout();
+  };
+
   return (
-    <Modal className="cart" open={progress === 'cart'}>
+    <Modal
+      className="cart"
+      open={progress === 'cart'}
+      onClose={progress === 'cart' ? handleCloseCart : null}
+    >
       <ul>
-        {items.map((item) => (
-          <CartItem
-            key={item.id}
-            name={item.name}
-            quantity={item.quantity}
-            price={item.price}
-            onIncrease={() => addItem(item)}
-            onDecrease={() => removeItem(item.id)}
-          />
-        ))}
+        {items.map((item) => {
+          console.log(item.id);
+          return (
+            <CartItem
+              key={item.id}
+              name={item.name}
+              quantity={item.quantity}
+              price={item.price}
+              onIncrease={() => addItem(item)}
+              onDecrease={() => removeItem(item.id)}
+            />
+          );
+        })}
       </ul>
       <p className="cart-total">{currencyFormatter.format(cartTotal)}</p>
       <p className="modal-actions">
         <Button textOnly onClick={handleCloseCart}>
           Close
         </Button>
-        <Button onClick={handleCloseCart}>Go to checkout</Button>
+
+        {items.length > 0 && <Button onClick={handleOpenCheckout}>Go to checkout</Button>}
       </p>
     </Modal>
   );

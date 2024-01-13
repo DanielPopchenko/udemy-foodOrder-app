@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useFetch } from '../../hooks/useFetch';
+import Error from '../error/Error';
 import Meal from './Meal';
 
+// ! Not to enter inf loop and recreate this object tonns of times
+// ! it is create only once
+const configObject = {};
+
 const Meals = () => {
-  const [meals, setMeals] = useState([]);
+  const {
+    data: meals,
+    isLoading,
+    error,
+  } = useFetch('http://localhost:3000/meals', configObject, []);
 
-  useEffect(() => {
-    const fetchMeals = async () => {
-      const response = await fetch('http://localhost:3000/meals');
+  if (isLoading) {
+    return <p className="center">Meals are loading...!</p>;
+  }
 
-      if (!response.ok) {
-        console.log('error');
-        return;
-      }
-
-      const fetchedMeals = await response.json();
-      console.log(fetchedMeals);
-      setMeals(fetchedMeals);
-    };
-
-    fetchMeals();
-  }, []);
+  // ! If we have an error this component should be returned
+  if (error) {
+    return <Error title="Failed to fetch meals" message={error} />;
+  }
 
   return (
     <ul id="meals">

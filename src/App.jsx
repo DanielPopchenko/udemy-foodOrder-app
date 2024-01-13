@@ -1,8 +1,10 @@
 import Cart from './components/cart/Cart';
+import Checkout from './components/checkout/Checkout';
 import Header from './components/header/Header';
 import Meals from './components/meals/Meals';
 import { UserProgressContextProvider } from './store/UserProgress';
 import { CartContextProvider } from './store/cart';
+import './App.css';
 
 const App = () => {
   return (
@@ -11,6 +13,8 @@ const App = () => {
         <Header />
         <Meals />
         <Cart />
+
+        <Checkout />
       </CartContextProvider>
     </UserProgressContextProvider>
   );

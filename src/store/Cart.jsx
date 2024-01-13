@@ -4,12 +4,11 @@ const CartContext = createContext({
   items: '',
   addItem: (item) => {},
   removeItem: (id) => {},
+  clearCart: () => {},
 });
 // ? Reducer function
 // ? Here we write actions that we expect to be executed with help of dispatches.
 const cartReducer = (state, action) => {
-  console.log('action.item.id: ', action.item.id);
-
   // ?  adding an element
   if (action.type === 'ADD_ITEM') {
     //   ! never mutate the state like this !!!
@@ -38,24 +37,15 @@ const cartReducer = (state, action) => {
     }
     return { ...state, items: updatedItems };
   }
+
   // ?   removing item
   if (action.type === 'REMOVE_ITEM') {
-    const existingCartItemIdx = state.items.findIndex(
-      // !
-
-      // ! action.item.id id undefined !!!
-
-      // !
-
-      (item) => item.id === action.item.id,
-    );
-    console.log('existingCartItemIdx: ', existingCartItemIdx);
+    const existingCartItemIdx = state.items.findIndex((item) => item.id === action.id);
     //   find an existing element
     const existingCartItem = state.items[existingCartItemIdx];
 
-    console.log('existingCartItem: ', existingCartItem);
+    const updatedItems = [...state.items];
 
-    const updatedItems = [state.items];
     if (existingCartItem.quantity === 1) {
       // we want to remove item
       updatedItems.splice(existingCartItemIdx, 1);
@@ -65,10 +55,16 @@ const cartReducer = (state, action) => {
         quantity: existingCartItem.quantity - 1,
       };
 
-      updatedItems[existingCartItem] = updatedItem;
+      updatedItems[existingCartItemIdx] = updatedItem;
     }
     return { ...state, items: updatedItems };
   }
+
+  if (action.type === 'CLEAR_CART') {
+    return { ...state, items: [] };
+  }
+
+  return state;
 };
 
 export const CartContextProvider = ({ children }) => {
@@ -77,16 +73,21 @@ export const CartContextProvider = ({ children }) => {
 
   const addItem = (item) => {
     dispatchCart({ type: 'ADD_ITEM', item });
-    console.log(cartState);
   };
+
   const removeItem = (id) => {
     dispatchCart({ type: 'REMOVE_ITEM', id });
+  };
+
+  const clearCart = () => {
+    dispatchCart({ type: 'CLEAR_CART' });
   };
 
   const cartContext = {
     items: cartState.items,
     addItem,
     removeItem,
+    clearCart,
   };
 
   return <CartContext.Provider value={cartContext}>{children}</CartContext.Provider>;
